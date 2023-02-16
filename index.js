@@ -11,43 +11,48 @@ import db from "./config/Database.js";
 
 dotenv.config();
 
+//оголошуємо змінну для експресу
 const app = express();
-
-// (async () => {
-//     await db.sync();
-// })();
-// store.sync();
-
+//конфігурація store для зберігання сесій
 const sessionStore = SequelizeStore(session.Store);
 const store = new sessionStore({
-    db: db
+    db: db,
+    checkExpirationInterval: 5 * 60 * 1000,
+    expiration: 10 * 60 * 1000
 });
-
+//конфігурація експресу під сесії
 app.use(session({
     secret: process.env.SESS_SECRET,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: store,
     cookie: {
-        secure: "auto"
+        secure: "auto",
     }
 
 }));
-
+//корси
 app.use(cors());
-// app.use(cors({
-//     credentials: true,
-//     origin: ['http://localhost:3000']
-// }));
-
+//конфігурація для відпраки json
 app.use(express.json());
 
 /*Routes */
 app.use(UserRouter);
 app.use(AuthRouter);
 
-
-
+//прослуховування порту для відповіді серверу
 app.listen(process.env.APP_PORT, () => {
     console.log("Server up!");
 })
+
+
+
+//     (async () => {
+//         await db.sync();
+//     })();
+// store.sync();
+
+// app.use(cors({
+//     credentials: true,
+//     origin: ['http://localhost:3000']
+// }));

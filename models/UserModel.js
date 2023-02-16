@@ -22,10 +22,9 @@ const Users = db.define('users', {
     },
     lastName: {
         type: DataTypes.STRING,
-        allowNull: false,
         validate: {
-            notEmpty: true,
-            len: [3, 100],
+            notEmpty: false,
+            len: [0, 100],
         }
     },
     email: {
