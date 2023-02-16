@@ -32,7 +32,7 @@ app.use(session({
 
 }));
 //корси
-app.use(cors());
+app.use(cors({ origin: "*" }));
 //конфігурація для відпраки json
 app.use(express.json());
 
